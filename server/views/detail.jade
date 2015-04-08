@@ -12,15 +12,15 @@ block content
         .details
           h3 Notable Work
           h4 Title
-            p= article.title
+            p= newsfeeds.title
           h4 Author
-            p= article.author
+            p= newsfeeds.author
           h4 Project URL
-            a.url(href=article.photoURL)
-              p= article.photoURL
+            a.url(href=newsfeeds.photoURL)
+              p= newsfeeds.photoURL
           h4 Creation Date
-            p= article.created_at
-          p= article.body
+            p= newsfeeds.created_at
+          p= newsfeeds.body
         //- .field
           //- form(action="/detail/#{article._id}?_method=PUT", method="POST")
           //- .field

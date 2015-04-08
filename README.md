@@ -1,6 +1,10 @@
 Express-Newsfeed
 ================
 
+DBPASS=tanathan nodemon app.js
+mongo ds045531.mongolab.com:45531/newsfeed -u tanathan -p tanathan
+
+
 MEH stack - Mongo Express and HTML5 
 
 Use the MEH stack plus *almost* any other library or templating engines you want to fulfill the requirements.  

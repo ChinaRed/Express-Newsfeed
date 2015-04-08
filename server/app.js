@@ -15,7 +15,7 @@ var auth = require('./controllers/auth');
 // var livereload = require('connect-livereload');
 // var livereloadport = 35729;
 
-mongoose.connect('mongodb://tanathan:'+process.env.DBPASS+'@ds045531.mongolab.com:45531/newsfeed');
+mongoose.connect('mongodb://chinared:'+process.env.DBPASS+'@ds061671.mongolab.com:61671/express-newsfeed');
 
 //middleware
 // serves static assets
@@ -29,6 +29,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(methodOverride('_method'));
 app.set('view engine', 'jade');
+app.set('views',process.cwd() + '/server/views');
+
 
 app.use(auth);
 

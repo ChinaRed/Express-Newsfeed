@@ -11,33 +11,42 @@ console.log("failed login");
 
 router.list = function(req, res) {
   //calls all news in database
-  Newsfeed.find(function (err, newsfeeds1){
+  Newsfeed.find(function (err, newsfeeds){
     if (err) throw err;
     // rendering jade template newsfeed and all news are passed in
     res.render('index', {
-      newsfeeds : newsfeeds1
+      newsfeeds : newsfeeds
     });  
   });
 };
 
 router.get('/admin', ensureAuthenticated, function (req, res) {
-  Newsfeed.find(function (err, newsfeeds1) {
-    res.render('admin', {newsfeeds: newsfeeds1}) ;
+  Newsfeed.find(function (err, newsfeeds) {
+    res.render('admin', {newsfeeds: newsfeeds}) ;
   });
 });
 
-//detail page
-router.get('/:id'/*, ensureAuthenticated*/, function(req, res) {
+//renders newsfeed page
+router.get('/new_newsfeed', ensureAuthenticated, function(req, res) {
   Newsfeed.findOne({_id:req.params.id},
-    function(err, newsfeed) {
-    res.render('detail', {
-      article : newsfeed
+    function(err, newsfeeds) {
+    res.render('new_newsfeed', {
+      newsfeeds : newsfeeds
     });    
   });
 });
 
+//renders single post page
+router.get('/:id'/*, ensureAuthenticated*/, function(req, res) {
+  Newsfeed.findOne({_id:req.params.id},
+    function(err, newsfeeds) {
+    res.render('detail', {
+      newsfeeds : newsfeeds
+    });    
+  });
+});
 
-//new newsfeed
+//post newsfeed
 router.post('/', function(req, res) {
   var newsfeed = new Newsfeed(
   {
@@ -48,33 +57,45 @@ router.post('/', function(req, res) {
   });
   newsfeed.save(function(err){
     if (err) throw err;
-    res.redirect("/login_form");
+    res.redirect("/newsfeeds/admin");
   });   
 });
+
+//edit page view
+router.get('/edit/:id', ensureAuthenticated, function(req, res) {
+  Newsfeed.findOne({_id:req.params.id},
+    function(err, newsfeeds) {
+    res.render('edit', {
+      newsfeeds : newsfeeds
+    });    
+  });
+});
+
 
 router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-router.get('/admin', function(req, res){
-  res.redirect('/');
-});
 //edit newsfeed
-router.put('/:id', ensureAuthenticated, function(req, res) {
-  Newsfeed.update({_id:req.params.id},
-    { author: req.body.author,
-      title: req.body.title,
-      body: req.body.body,
-    }, function (err, newfeed){
-    res.redirect('/');  
+router.put('/edit/:id', ensureAuthenticated, function(req, res) {
+  Newsfeed.findOneAndUpdate({_id:req.params.id}, { $set:
+  { 
+    author : req.body.author,
+    title : req.body.title,
+    body : req.body.body,
+    photoURL : req.body.photoURL
+  }}, function (err, newsfeeds){
+    if (err) throw err;
+    res.redirect('/newsfeeds/admin');  
   });
 });
 
 //delete newsfeed
 router.delete('/:id', ensureAuthenticated, function (req, res) {
-  Newsfeed.remove({_id:req.params.id},
-    function(err, newsfeed) {
-  res.redirect('/');  
+  Newsfeed.find({_id:req.params.id}).remove().exec(function(err, newsfeed) {
+    if (err) throw err;
+    console.log("deleted");
+  res.redirect('/newsfeeds/admin');  
   });
 });
 
