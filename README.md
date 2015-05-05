@@ -1,8 +1,8 @@
 Express-Newsfeed
 ================
 
-DBPASS=tanathan nodemon app.js
-mongo ds045531.mongolab.com:45531/newsfeed -u tanathan -p tanathan
+DBPASS= nodemon app.js
+mongo ds061671.mongolab.com:61671/express-newsfeed -u  -p 
 
 
 MEH stack - Mongo Express and HTML5 
